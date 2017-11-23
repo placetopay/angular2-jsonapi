@@ -1,5 +1,5 @@
 {
-  "name": "angular2-jsonapi",
+  "name": "placetopay-angular2-jsonapi",
   "version": "4.0.1",
   "description": "A lightweight Angular 2 adapter for JSON API",
   "scripts": {

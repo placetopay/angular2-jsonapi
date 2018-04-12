@@ -1,4 +1,3 @@
-import { Headers } from '@angular/http';
 import find from 'lodash-es/find';
 import includes from 'lodash-es/includes';
 import { Observable } from 'rxjs/Observable';
@@ -159,7 +158,7 @@ export class JsonApiModel {
       if (relationshipData) {
         const newObject: T = this.createOrPeek(modelType, relationshipData);
 
-        if (level <= 1) {
+        if (level <= 2) {
           newObject.syncRelationships(relationshipData, included, level + 1);
         }
         relationshipList.push(newObject);
@@ -182,7 +181,7 @@ export class JsonApiModel {
     if (relationshipData) {
       const newObject: T = this.createOrPeek(modelType, relationshipData);
 
-      if (level <= 1) {
+      if (level <= 2) {
         newObject.syncRelationships(relationshipData, included, level + 1);
       }
 
@@ -198,10 +197,10 @@ export class JsonApiModel {
       _.extend(peek, data.attributes);
       return peek;
     }
-    
+
     const newObject: T = new modelType(this._datastore, data);
     this._datastore.addToStore(newObject);
-    
+
     return newObject;
   }
 }

@@ -32,9 +32,9 @@ export class JsonApiDatastore {
     if (this.datastoreConfig.overrides
     && this.datastoreConfig.overrides.getDirtyAttributes) {
       return this.datastoreConfig.overrides.getDirtyAttributes;
-    } else {
-      return JsonApiDatastore.getDirtyAttributes;
     }
+
+    return JsonApiDatastore.getDirtyAttributes;
   }
 
   protected config: DatastoreConfig;
@@ -301,12 +301,13 @@ export class JsonApiDatastore {
       return model;
     }
 
+    const deserializedModel = this.deserializeModel(modelType, body.data);
+
     if (model) {
       model.id = body.data.id;
-      Object.assign(model, body.data.attributes);
+      Object.assign(model, deserializedModel);
     }
 
-    const deserializedModel = model || this.deserializeModel(modelType, body.data);
     this.addToStore(deserializedModel);
     if (body.included) {
       deserializedModel.syncRelationships(body.data, body.included, 0);

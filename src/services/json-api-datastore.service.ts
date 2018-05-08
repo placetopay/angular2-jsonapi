@@ -389,6 +389,19 @@ export class JsonApiDatastore {
     }
   }
 
+  public transformSerializedNamesToPropertyNames<T extends JsonApiModel>(modelType: ModelType<T>, attributes: any) {
+    const serializedNameToPropertyName = this.getModelPropertyNames(modelType.prototype);
+    const properties: any = {};
+
+    Object.keys(serializedNameToPropertyName).forEach((serializedName) => {
+      if (attributes[serializedName] !== null && attributes[serializedName] !== undefined) {
+        properties[serializedNameToPropertyName[serializedName]] = attributes[serializedName];
+      }
+    });
+
+    return properties;
+  }
+
   protected resetMetadataAttributes<T extends JsonApiModel>(res: T, attributesMetadata: any, modelType: ModelType<T>) {
     // TODO check why is attributesMetadata from the arguments never used
 
@@ -437,19 +450,6 @@ export class JsonApiDatastore {
   protected get datastoreConfig(): DatastoreConfig {
     const configFromDecorator: DatastoreConfig = Reflect.getMetadata('JsonApiDatastoreConfig', this.constructor);
     return Object.assign(configFromDecorator, this.config);
-  }
-
-  protected transformSerializedNamesToPropertyNames<T extends JsonApiModel>(modelType: ModelType<T>, attributes: any) {
-    const serializedNameToPropertyName = this.getModelPropertyNames(modelType.prototype);
-    const properties: any = {};
-
-    Object.keys(serializedNameToPropertyName).forEach((serializedName) => {
-      if (attributes[serializedName] !== null && attributes[serializedName] !== undefined) {
-        properties[serializedNameToPropertyName[serializedName]] = attributes[serializedName];
-      }
-    });
-
-    return properties;
   }
 
   protected getModelPropertyNames(model: JsonApiModel) {

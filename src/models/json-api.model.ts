@@ -156,6 +156,11 @@ export class JsonApiModel {
       const relationshipData: any = find(included, { id: item.id, type: typeName });
 
       if (relationshipData) {
+        relationshipData.attributes = this._datastore.transformSerializedNamesToPropertyNames(
+          modelType,
+          relationshipData.attributes
+        );
+
         const newObject: T = this.createOrPeek(modelType, relationshipData);
 
         if (level <= 2) {
